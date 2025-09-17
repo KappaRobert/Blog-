@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель | Фотоблог</title>
+    <style>
+        /* Базовые сбросы и переменные */
+        :root {
+            --primary-color: #2d3436;
+            --accent-color: #6c5ce7;
+            --background-color: #f5f7fa;
+            --card-background: #ffffff;
+            --text-color: #2d3436;
+            --text-light: #636e72;
+            --error-color: #e74c3c;
+            --success-color: #27ae60;
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 1.5rem;
+            --spacing-lg: 2.5rem;
+            --border-radius: 8px;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Контейнер */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+            flex: 1;
+        }
+
+        /* Шапка */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: var(--spacing-md) 0;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .site-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .back-link {
+            color: white;
+            text-decoration: none;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .back-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Основной контент */
+        .admin-container {
+            background: var(--card-background);
+            border-radius: var(--border-radius);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            margin-bottom: var(--spacing-md);
+            color: var(--primary-color);
+            text-align: center;
+        }
+
+        /* Форма */
+        .form-group {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: var(--spacing-xs);
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: var(--spacing-sm);
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .file-input-container {
+            position: relative;
+        }
+
+        .file-input-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-md);
+            border: 2px dashed #ddd;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .file-input-label:hover {
+            border-color: var(--accent-color);
+        }
+
+        .file-input-icon {
+            font-size: 2rem;
+            margin-bottom: var(--spacing-xs);
+            color: var(--text-light);
+        }
+
+        .file-input {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .file-name {
+            margin-top: var(--spacing-xs);
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: var(--spacing-sm);
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn:hover {
+            background-color: #5649c5;
+            transform: translateY(-2px);
+        }
+
+        /* Уведомления */
+        .alert {
+            padding: var(--spacing-sm);
+            border-radius: var(--border-radius);
+            margin-bottom: var(--spacing-md);
+            text-align: center;
+        }
+
+        .alert-success {
+            background-color: rgba(39, 174, 96, 0.2);
+            color: var(--success-color);
+            border: 1px solid var(--success-color);
+        }
+
+        .alert-error {
+            background-color: rgba(231, 76, 60, 0.2);
+            color: var(--error-color);
+            border: 1px solid var(--error-color);
+        }
+
+        /* Подвал */
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: var(--spacing-md) 0;
+            margin-top: auto;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: var(--spacing-sm);
+            }
+            
+            .admin-container {
+                padding: var(--spacing-md);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <h1 class="site-title">Фотоблог | Админ-панель</h1>
+            <a href="/" class="back-link">Вернуться на сайт</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="admin-container">
+            <h2 class="page-title">Добавить новый пост</h2>
+            
+            <!-- Здесь могут выводиться уведомления об успехе или ошибке -->
+            <!-- <div class="alert alert-success">Пост успешно добавлен!</div> -->
+            <!-- <div class="alert alert-error">Ошибка при добавлении поста</div> -->
+            
+            <form method="post" enctype="multipart/form-data" id="post-form">
+                <div class="form-group">
+                    <label class="form-label">Заголовок</label>
+                    <input type="text" name="title" class="form-control" placeholder="Введите заголовок поста" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Описание</label>
+                    <textarea name="description" class="form-control" placeholder="Добавьте описание к фотографии" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Изображение</label>
+                    <div class="file-input-container">
+                        <input type="file" name="image" id="image" class="file-input" accept="image/*" required>
+                        <label for="image" class="file-input-label">
+                            <span class="file-input-icon">📷</span>
+                            <span>Нажмите для загрузки изображения</span>
+                            <span class="file-name" id="file-name">Файл не выбран</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn">Опубликовать</button>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2023 Фотоблог. Админ-панель</p>
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript для отображения имени выбранного файла
+        document.getElementById('image').addEventListener('change', function(e) {
+            const fileName = e.target.files[0] ? e.target.files[0].name : 'Файл не выбран';
+            document.getElementById('file-name').textContent = fileName;
+        });
+
+        // Простая валидация формы
+        document.getElementById('post-form').addEventListener('submit', function(e) {
+            const title = this.elements['title'].value.trim();
+            const description = this.elements['description'].value.trim();
+            const image = this.elements['image'].value;
+            
+            if (!title || !description || !image) {
+                e.preventDefault();
+                alert('Пожалуйста, заполните все поля формы');
+            }
+        });
+    </script>
+</body>
+</html>
